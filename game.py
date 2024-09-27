@@ -127,6 +127,20 @@ class BattlingKnight:
             self.play_move_in_arena(move)
             self.arena.print_arena_state()
 
+    @staticmethod
+    def write_to_json_file(results):
+        with open('final_state.json', 'w') as json_file:
+            json_file.write('{\n')
+            for idx, (key, value) in enumerate(results.items()):
+                json_file.write(f' "{key}": {json.dumps(value, separators=(",", ":"))}')
+                if idx < len(results) - 1:
+                    json_file.write(",\n")
+                else:
+                    json_file.write("\n")
+            json_file.write('}\n')
+
+        print('Saved Results to JSON')
+
     def save_results_to_json(self):
         """
         Method to save state of game in JSON format
@@ -206,16 +220,7 @@ class BattlingKnight:
             ]
         }
 
-        with open('final_state.json', 'w') as json_file:
-            json_file.write('{\n')
-            for idx, (key, value) in enumerate(result.items()):
-                json_file.write(f' "{key}": {json.dumps(value, separators=(",", ":"))}')
-                if idx < len(result) - 1:
-                    json_file.write(",\n")
-                else:
-                    json_file.write("\n")
-            json_file.write('}\n')
-        print('Saved Results to JSON')
+        self.write_to_json_file(results=result)
 
     def read_moves_from_file(self):
         try:
